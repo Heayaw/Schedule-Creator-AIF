@@ -8,23 +8,136 @@
 </head>
 <body>
     <div class="container">
-        <h1>Assessment Scheduler</h1>
-        <div class="form-group">
-            <label for="assessmentType">Assessment Type</label>
-            <input type="text" id="assessmentType" placeholder="e.g. Exam, Project, Quiz">
-        </div>
-        <div class="form-group">
-            <label for="group">Group</label>
-            <input type="text" id="group" placeholder="e.g. Group A, Year 10">
-        </div>
-        <div class="form-group">
-            <label for="date">Date</label>
-            <input type="date" id="date">
-        </div>
-        <button id="addBtn">Add to Schedule</button>
-        <div class="schedule-list" id="scheduleList">
-            <!-- Scheduled items will appear here -->
-        </div>
+        <input type="text" placeholder="select date" />
+        
+        <div class="calendar">
+
+            <div class="left-side">
+                <div class="controls">
+                    <button class="prev">Prev</button>
+                    <strong class="label">"Month YYYY</strong>
+                </div>
+                <div class="days">
+                    <span class="day">S</span>
+                    <span class="day">M</span>
+                    <span class="day">T</span>
+                    <span class="day">W</span>
+                    <span class="day">T</span>
+                    <span class="day">F</span>
+                    <span class="day">S</span>
+                </div>
+                <div class="dates">
+                    <span class="disabled">1</span>
+                    <span class="disabled">2</span>
+                    <span class="disabled">3</span>
+                    <span class="disabled">4</span>
+                    <span class="disabled">5</span>
+                    <span class="disabled">6</span>
+                    <span class="disabled">7</span>
+                    <span class="disabled">8</span>
+                    <span>9</span>
+                    <span>10</span>
+                    <span>11</span>
+                    <span>12</span>
+                    <span>13</span>
+                    <span>14</span>
+                    <span>15</span>
+                    <span>16</span>
+                    <span>17</span>
+                    <span>18</span>
+                    <span>19</span>
+                    <span>20</span>
+                    <span>21</span>
+                    <span>22</span>
+                    <span>23</span>
+                    <span class="today">24</span>
+                    <span>25</span>
+                    <span>26</span>
+                    <span>27</span>
+                    <span>28</span>
+                    <span>29</span>
+                    <span>30</span>
+                    <span>31</span>
+                    <span>32</span>
+                    <span>33</span>
+                    <span>34</span>
+                    <span class="disabled">35</span>
+                    <span class="disabled">36</span>
+                    <span class="disabled">37</span>
+                    <span class="disabled">38</span>
+                    <span class="disabled">39</span>
+                    <span class="disabled">40</span>
+                    <span class="disabled">41</span>
+                    <span class="disabled">42</span>
+                </div>
+            </div>
+
+            <div class="right-side">
+                <div class="controls">
+                    <button class="Next">Next</button>
+                    <strong class="label">"Month YYYY</strong>
+                </div>
+                <div class="days">
+                    <span class="day">S</span>
+                    <span class="day">M</span>
+                    <span class="day">T</span>
+                    <span class="day">W</span>
+                    <span class="day">T</span>
+                    <span class="day">F</span>
+                    <span class="day">S</span>
+                </div>
+                <div class="dates">
+                    <span class="disabled">1</span>
+                    <span class="disabled">2</span>
+                    <span class="disabled">3</span>
+                    <span class="disabled">4</span>
+                    <span class="disabled">5</span>
+                    <span class="disabled">6</span>
+                    <span class="disabled">7</span>
+                    <span class="disabled">8</span>
+                    <span>9</span>
+                    <span>10</span>
+                    <span>11</span>
+                    <span class="range-start">12</span>
+                    <span >13</span>
+                    <span class="in-range">14</span>
+                    <span class="in-range">15</span>
+                    <span class="in-range">16</span>
+                    <span class="in-range">17</span>
+                    <span class="in-range">18</span>
+                    <span class="in-range">19</span>
+                    <span class="in-range">20</span>
+                    <span class="in-range">21</span>
+                    <span class="in-range">22</span>
+                    <span class="range-end">23</span>
+                    <span>24</span>
+                    <span>25</span>
+                    <span>26</span>
+                    <span>27</span>
+                    <span>28</span>
+                    <span>29</span>
+                    <span>30</span>
+                    <span>31</span>
+                    <span>32</span>
+                    <span>33</span>
+                    <span>34</span>
+                    <span class="disabled">35</span>
+                    <span class="disabled">36</span>
+                    <span class="disabled">37</span>
+                    <span class="disabled">38</span>
+                    <span class="disabled">39</span>
+                    <span class="disabled">40</span>
+                    <span class="disabled">41</span>
+                    <span class="disabled">42</span>
+            </div>
+            </div>
+
+            <div class="action-menu">
+                <span class="selection">DD/MM//YYYY - DD/MM/YYYY</span>
+
+                <button class="cancel">Cancel</button>
+                <button class="apply">Apply</button>
+            </div>
     </div>
     <script src="script.js"></script>
 </body>
