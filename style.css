@@ -51,12 +51,13 @@ body {
     user-select: none;
     text-align: center;
     font-size: .85rem;
-}
-
-.calendar:not([hidden]) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: .5rem;
+}
+
+.calendar[hidden] {
+    display: none;
 }
 
 .controls {
