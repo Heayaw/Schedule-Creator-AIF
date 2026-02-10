@@ -5,7 +5,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background-color: #f4f7f6;
     display: flex;
     justify-content: center;
@@ -28,14 +28,15 @@ body {
     border-radius: 8px;
     margin-bottom: 10px;
     outline: none;
+    font-size: 1rem;
 }
 
 .calendar {
     display: flex;
     flex-wrap: wrap;
     background: #fff;
-    border-radius: 8px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     padding: 20px;
     gap: 20px;
 }
@@ -50,44 +51,47 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-    height: 30px;
 }
 
 .month-year {
     font-size: 1rem;
+    font-weight: 600;
     color: #333;
 }
 
 button.prev, button.next {
-    background: #f0f0f0;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
+    background: #f8f9fa;
+    border: 1px solid #eee;
+    padding: 6px 12px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: all 0.2s;
+    color: #555;
 }
 
 button.prev:hover, button.next:hover {
-    background: #e0e0e0;
+    background: #e9ecef;
+    border-color: #ddd;
 }
 
 .days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    margin-bottom: 10px;
+    margin-bottom: 8px;
 }
 
 .day {
-    font-size: 0.8rem;
-    font-weight: bold;
-    color: #999;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #adb5bd;
     text-align: center;
+    text-transform: uppercase;
 }
 
 .dates {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 2px;
+    gap: 0; /* Gap 0 makes the range highlight look like a solid bar */
 }
 
 .dates span {
@@ -97,8 +101,9 @@ button.prev:hover, button.next:hover {
     justify-content: center;
     font-size: 0.9rem;
     cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.2s;
+    transition: background 0.15s, color 0.15s;
+    user-select: none;
+    border-radius: 4px; /* Default small radius for single days */
 }
 
 .dates span:hover:not(.disabled) {
@@ -107,14 +112,41 @@ button.prev:hover, button.next:hover {
 }
 
 .dates span.disabled {
-    color: #ddd;
+    color: #dee2e6;
     cursor: default;
 }
 
+/* Today marker - a simple ring so it doesn't hide selection colors */
 .dates span.today {
-    background-color: #ff4757;
-    color: white;
+    box-shadow: inset 0 0 0 2px #ff4757;
     font-weight: bold;
+    color: #ff4757;
+}
+
+/* Range Start Styling */
+.dates span.range-start {
+    background-color: #007bff !important;
+    color: white !important;
+    border-radius: 6px 0 0 6px !important;
+}
+
+/* Range End Styling */
+.dates span.range-end {
+    background-color: #007bff !important;
+    color: white !important;
+    border-radius: 0 6px 6px 0 !important;
+}
+
+/* Range Middle Styling */
+.dates span.in-range {
+    background-color: #e7f3ff !important;
+    color: #007bff !important;
+    border-radius: 0 !important;
+}
+
+/* If start and end are the same day, make it a full circle */
+.dates span.range-start.range-end {
+    border-radius: 6px !important;
 }
 
 .action-menu {
@@ -124,56 +156,43 @@ button.prev:hover, button.next:hover {
     align-items: center;
     margin-top: 10px;
     padding-top: 15px;
-    border-top: 1px solid #eee;
+    border-top: 1px solid #f1f3f5;
 }
 
 .selection {
     font-size: 0.85rem;
-    color: #666;
+    color: #495057;
+    font-weight: 500;
 }
 
 .cancel {
-    background: none;
+    background: transparent;
     border: none;
-    color: #666;
-    margin-right: 10px;
+    color: #868e96;
+    margin-right: 15px;
     cursor: pointer;
+    font-weight: 500;
+}
+
+.cancel:hover {
+    color: #343a40;
 }
 
 .apply {
     background: #007bff;
     color: white;
     border: none;
-    padding: 8px 20px;
-    border-radius: 4px;
+    padding: 10px 24px;
+    border-radius: 6px;
     cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
 }
 
 .apply:hover {
     background: #0056b3;
 }
 
-.dates span.range-start {
-    background-color: #007bff !important;
-    color: white !important;
-    border-radius: 4px 0 0 4px !important;
-}
-
-/* The second date you click */
-.dates span.range-end {
-    background-color: #007bff !important;
-    color: white !important;
-    border-radius: 0 4px 4px 0 !important;
-}
-
-/* Everything in between */
-.dates span.in-range {
-    background-color: #e7f3ff !important;
-    color: #007bff !important;
-    border-radius: 0 !important;
-}
-
-/* Make sure clicks actually feel like clicks */
 .dates span:active {
     transform: scale(0.9);
 }
