@@ -152,3 +152,28 @@ button.prev:hover, button.next:hover {
 .apply:hover {
     background: #0056b3;
 }
+
+.dates span.range-start {
+    background-color: #007bff !important;
+    color: white !important;
+    border-radius: 4px 0 0 4px !important;
+}
+
+/* The second date you click */
+.dates span.range-end {
+    background-color: #007bff !important;
+    color: white !important;
+    border-radius: 0 4px 4px 0 !important;
+}
+
+/* Everything in between */
+.dates span.in-range {
+    background-color: #e7f3ff !important;
+    color: #007bff !important;
+    border-radius: 0 !important;
+}
+
+/* Make sure clicks actually feel like clicks */
+.dates span:active {
+    transform: scale(0.9);
+}
