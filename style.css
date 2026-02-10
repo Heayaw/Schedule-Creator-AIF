@@ -118,7 +118,7 @@ button.prev:hover, button.next:hover {
 
 /* Today marker - a simple ring so it doesn't hide selection colors */
 .dates span.today {
-    box-shadow: inset 0 0 0 2px #ff4757;
+    box-shadow: inset 0 0 0 2px #0b06ad;
     font-weight: bold;
     color: #ff4757;
 }
@@ -190,7 +190,7 @@ button.prev:hover, button.next:hover {
 }
 
 .apply:hover {
-    background: #0056b3;
+    background: #4c6887;
 }
 
 .dates span:active {
