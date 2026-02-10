@@ -196,3 +196,22 @@ button.prev:hover, button.next:hover {
 .dates span:active {
     transform: scale(0.9);
 }
+
+.dates span {
+    cursor: pointer !important; /* Forces the hand icon */
+    user-select: none; /* Prevents text highlighting when double clicking */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+}
+
+/* This makes it "feel" like a button when you hover */
+.dates span:not(.disabled):hover {
+    background-color: #f0f0f0;
+}
+
+/* This makes it "shrink" when you actually press down */
+.dates span:not(.disabled):active {
+    transform: scale(0.9);
+}

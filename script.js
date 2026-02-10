@@ -73,7 +73,12 @@ const renderMonth = (date, containerSelector) => {
             span.classList.add('in-range');
         }
 
-        span.addEventListener("click", () => handleDateClick(i, month, year));
+        // FORCE THE CLICK LOGIC HERE
+        span.style.cursor = "pointer"; 
+        span.addEventListener("click", () => {
+            handleDateClick(i, month, year);
+        });
+        
         datesContainer.appendChild(span);
     }
 
