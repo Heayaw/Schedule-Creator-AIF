@@ -1,22 +1,73 @@
-// script.js
-// Handles adding schedule items and UI interactions
+const calendar = {
+    months: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],
+    currentDate: new Date(),
+    viewDate: new Date()
+};
 
-function addSchedule() {
-    const type = document.getElementById('assessmentType').value;
-    const group = document.getElementById('group').value;
-    const date = document.getElementById('date').value;
-    if (!type || !group || !date) return alert('Please fill all fields.');
-    const list = document.getElementById('scheduleList');
-    const item = document.createElement('div');
-    item.className = 'schedule-item';
-    item.textContent = `${type} for ${group} on ${date}`;
-    list.appendChild(item);
-    document.getElementById('assessmentType').value = '';
-    document.getElementById('group').value = '';
-    document.getElementById('date').value = '';
+const init = () => {
+    renderCalendar();
+    
+    document.getElementById("prev-month").addEventListener("click", () => {
+        calendar.viewDate.setMonth(calendar.viewDate.getMonth() - 1);
+        renderCalendar();
+    });
+    
+    document.getElementById("next-month").addEventListener("click", () => {
+        calendar.viewDate.setMonth(calendar.viewDate.getMonth() + 1);
+        renderCalendar();
+    });
+};
+
+const renderCalendar = () => {
+    const leftDate = new Date(calendar.viewDate);
+    renderMonth(leftDate, ".left-side");
+
+    const rightDate = new Date(calendar.viewDate);
+    rightDate.setMonth(rightDate.getMonth() + 1);
+    renderMonth(rightDate, ".right-side");
+};
+
+const renderMonth = (date, containerSelector) => {
+    const container = document.querySelector(containerSelector);
+    const monthName = calendar.months[date.getMonth()];
+    const year = date.getFullYear();
+    
+    container.querySelector(".month-year").textContent = `${monthName} ${year}`;
+    datesContainer = container.querySelector(".dates");
+    datesContainer.innerHTML = "";
+
+    const firstDayOfMonth = new Date(year, month, 1).getDay();
+    const lastDateOfMonth = new Date(year, month + 1, 0).getDate();
+    const lastDateOfPrevMonth = new Date(year, month, 0).getDate();
+
+    for (let i = firstDayOfMonth - 1; i >= 0; i--) {
+        const dateSpan = document.createElement("span");
+        span.classList.add('disabled');
+        span.textContent = lastDateOfPrevMonth - i + 1;
+        datesContainer.appendChild(span);
+    }
+
+    for (let i = 1; i <= lastDateOfMonth; i++) {
+        const span = document.createElement('span');
+        span.textContent = i;
+
+        if (i === calendar.currentDate.getDate() && 
+            month === calendar.currentDate.getMonth() && 
+            year === calendar.currentDate.getFullYear()) {
+            span.classList.add('today');
+        }
+        
+        datesContainer.appendChild(span);
+    }
+
+    const totalCells = 42;
+    const remainingCells = totalCells - datesContainer.children.length;
+    for (let i = 1; i <= remainingCells; i++) {
+        const span = document.createElement('span');
+        span.classList.add('disabled');
+        span.textContent = i;
+        datesContainer.appendChild(span);
+    }
 }
 
-// Attach event listener
-window.onload = function() {
-    document.getElementById('addBtn').onclick = addSchedule;
-};
+document.addEventListener('DOMContentLoaded', init);
