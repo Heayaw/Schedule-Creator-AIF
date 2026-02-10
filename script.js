@@ -63,8 +63,8 @@ const renderMonth = (date, containerSelector) => {
     }
 
     const totalCells = 42;
-    const remainingCells = totalCells - datesContainer.children.length;
-    for (let i = 1; i <= remainingCells; i++) {
+    const currentCells = datesContainer.children.length;
+    for (let i = 1; i <= (totalCells - currentCells); i++) {
         const span = document.createElement('span');
         span.classList.add('disabled');
         span.textContent = i;
