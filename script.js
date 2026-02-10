@@ -1,7 +1,9 @@
 const calendar = {
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     currentDate: new Date(),
-    viewDate: new Date()
+    viewDate: new Date(),
+    startDate: null,
+    endDate: null
 };
 
 const init = () => {
@@ -52,13 +54,26 @@ const renderMonth = (date, containerSelector) => {
     for (let i = 1; i <= lastDateOfMonth; i++) {
         const span = document.createElement('span');
         span.textContent = i;
+        
+        const checkDate = new Date(year, month, i);
 
-        if (i === calendar.currentDate.getDate() && 
-            month === calendar.currentDate.getMonth() && 
-            year === calendar.currentDate.getFullYear()) {
+        if (checkDate.toDateString() === calendar.currentDate.toDateString()) {
             span.classList.add('today');
         }
-        
+
+        if (calendar.startDate && checkDate.toDateString() === calendar.startDate.toDateString()) {
+            span.classList.add('range-start');
+        }
+
+        if (calendar.endDate && checkDate.toDateString() === calendar.endDate.toDateString()) {
+            span.classList.add('range-end');
+        }
+
+        if (calendar.startDate && calendar.endDate && checkDate > calendar.startDate && checkDate < calendar.endDate) {
+            span.classList.add('in-range');
+        }
+
+        span.addEventListener("click", () => handleDateClick(i, month, year));
         datesContainer.appendChild(span);
     }
 
@@ -70,6 +85,21 @@ const renderMonth = (date, containerSelector) => {
         span.textContent = i;
         datesContainer.appendChild(span);
     }
+};
+
+const handleDateClick = (day, month, year) => {
+    const selected = new Date(year, month, day);
+
+    if (!calendar.startDate || (calendar.startDate && calendar.endDate)) {
+        calendar.startDate = selected;
+        calendar.endDate = null;
+    } else if (selected < calendar.startDate) {
+        calendar.startDate = selected;
+    } else {
+        calendar.endDate = selected;
+    }
+
+    renderCalendar();
 };
 
 document.addEventListener('DOMContentLoaded', init);
