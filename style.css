@@ -60,8 +60,8 @@ body {
 }
 
 button.prev, button.next {
-    background: #404040;
-    border: 1px solid #404040;
+    background: #dedede;
+    border: 1px solid #dedede;
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
@@ -70,8 +70,8 @@ button.prev, button.next {
 }
 
 button.prev:hover, button.next:hover {
-    background: #e9ecef;
-    border-color: #ddd;
+    background: #dedede;
+    border-color: #dedede;
 }
 
 .days {
