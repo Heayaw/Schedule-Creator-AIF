@@ -66,14 +66,14 @@ button.prev, button.next {
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
-    color: #e2e2e2;
+    color: #777777;
 }
 
 button.prev:hover, button.next:hover {
-    background: #dedede;
-    border-color: #dedede;
+    background: #595959;
+    border-color: #3c3c3c;
 }
-
+ 
 .days {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
