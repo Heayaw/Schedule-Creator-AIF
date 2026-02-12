@@ -127,7 +127,6 @@ const cancelSelection = () => {
     calendar.startDate = null;
     calendar.endDate = null;
     renderCalendar();
-    closeCalendar();
 }
 
 const formatDate = (date) => {
