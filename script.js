@@ -20,6 +20,9 @@ const init = () => {
         calendar.viewDate.setMonth(calendar.viewDate.getMonth() + 1);
         renderCalendar();
     });
+
+    document.querySelector(".cancel").addEventListener("click", cancelSelection);
+    document.querySelector(".apply").addEventListener("click", applyRange);
 };
 
 const renderCalendar = () => {
@@ -105,6 +108,43 @@ const handleDateClick = (day, month, year) => {
     }
 
     renderCalendar();
+};
+
+const applyRange = () => {
+    if (calendar.startDate && calendar.endDate) {
+        const displayText = `${formatDate(calendar.startDate)} - ${formatDate(calendar.endDate)}`;
+        document.getElementById("date-input").value = displayText;
+
+        closeCalendar();
+
+        processDateRange(calendar.startDate, calendar.endDate);
+    } else {
+        alert("Please select a valid date range.");
+    }
+}
+
+const cancelSelection = () => {
+    calendar.startDate = null;
+    calendar.endDate = null;
+    renderCalendar();
+    closeCalendar();
+}
+
+const formatDate = (date) => {
+    const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
+};
+
+const closeCalendar = () => {
+    document.querySelector(".calendar").style.display = "none";
+};
+
+const openCalendar = () => {
+    document.querySelector(".calendar").style.display = "block";
+};
+
+const processDateRange = (startDate, endDate) => {
+    console.log(`Date range selected: ${formatDate(startDate)} to ${formatDate(endDate)}`);
 };
 
 document.addEventListener('DOMContentLoaded', init);
