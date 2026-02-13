@@ -114,9 +114,6 @@ const applyRange = () => {
     if (calendar.startDate && calendar.endDate) {
         const displayText = `${formatDate(calendar.startDate)} - ${formatDate(calendar.endDate)}`;
         document.getElementById("date-input").value = displayText;
-
-        closeCalendar();
-
         processDateRange(calendar.startDate, calendar.endDate);
     } else {
         alert("Please select a valid date range.");
