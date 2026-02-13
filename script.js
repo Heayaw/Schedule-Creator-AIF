@@ -6,6 +6,8 @@ const calendar = {
     endDate: null
 };
 
+calendar.savedRanges = [];
+
 const init = () => {
     renderCalendar();
     
@@ -23,6 +25,11 @@ const init = () => {
 
     document.querySelector(".cancel").addEventListener("click", cancelSelection);
     document.querySelector(".apply").addEventListener("click", applyRange);
+
+    const saveBtn = document.getElementById("save-range");
+    const cancelLabelBtn = document.getElementById("cancel-label");
+    if (saveBtn) saveBtn.addEventListener("click", saveLabeledRange);
+    if (cancelLabelBtn) cancelLabelBtn.addEventListener("click", hideLabelEntry);
 };
 
 const renderCalendar = () => {
@@ -140,7 +147,70 @@ const openCalendar = () => {
 };
 
 const processDateRange = (startDate, endDate) => {
-    console.log(`Date range selected: ${formatDate(startDate)} to ${formatDate(endDate)}`);
+    showLabelEntry(startDate, endDate);
+};
+
+const showLabelEntry = (startDate, endDate) => {
+    const entry = document.getElementById('label-entry');
+    const text = document.getElementById('selected-range-text');
+    const labelInput = document.getElementById('range-label');
+    if (!entry || !text || !labelInput) return;
+    text.textContent = `${formatDate(startDate)} — ${formatDate(endDate)}`;
+    labelInput.value = '';
+    entry.style.display = 'block';
+    labelInput.focus();
+    calendar._tempSelection = { startDate, endDate };
+};
+
+const hideLabelEntry = () => {
+    const entry = document.getElementById('label-entry');
+    if (entry) entry.style.display = 'none';
+    delete calendar._tempSelection;
+};
+
+const saveLabeledRange = () => {
+    const labelInput = document.getElementById('range-label');
+    if (!calendar._tempSelection || !labelInput) return;
+    const label = labelInput.value.trim();
+    if (!label) {
+        alert('Please enter a label for the selected range.');
+        labelInput.focus();
+        return;
+    }
+    const { startDate, endDate } = calendar._tempSelection;
+    calendar.savedRanges.push({ startDate: new Date(startDate), endDate: new Date(endDate), label });
+    hideLabelEntry();
+    renderSavedRanges();
+    renderCalendar();
+};
+
+const renderSavedRanges = () => {
+    const container = document.getElementById('saved-ranges');
+    if (!container) return;
+    container.innerHTML = '';
+    if (calendar.savedRanges.length === 0) {
+        container.textContent = '';
+        return;
+    }
+    calendar.savedRanges.forEach((r, idx) => {
+        const div = document.createElement('div');
+        div.classList.add('saved-range');
+        const meta = document.createElement('div');
+        meta.classList.add('meta');
+        meta.innerHTML = `<div>${formatDate(r.startDate)} — ${formatDate(r.endDate)}</div><div class="label">${r.label}</div>`;
+        const del = document.createElement('button');
+        del.classList.add('delete');
+        del.textContent = 'Delete';
+        del.addEventListener('click', () => removeSavedRange(idx));
+        div.appendChild(meta);
+        div.appendChild(del);
+        container.appendChild(div);
+    });
+};
+
+const removeSavedRange = (index) => {
+    calendar.savedRanges.splice(index, 1);
+    renderSavedRanges();
 };
 
 document.addEventListener('DOMContentLoaded', init);

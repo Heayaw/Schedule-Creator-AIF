@@ -195,3 +195,33 @@ button.prev:hover, button.next:hover {
     transform: scale(0.9);
 }
 
+#saved-ranges {
+    background: transparent;
+}
+.saved-range {
+    background: #fff;
+    border: 1px solid #eef3f6;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+.saved-range .meta {
+    color: #495057;
+    font-weight: 600;
+}
+.saved-range .label {
+    color: #212529;
+}
+.saved-range button.delete {
+    background: #ff6b6b;
+    color: white;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+

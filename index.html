@@ -53,8 +53,17 @@
                         <button class="apply">Apply</button>
                     </div>
                 </div>
+                <div id="label-entry" style="display:none; width:100%; margin-top:12px;">
+                    <div style="display:flex; gap:8px; align-items:center;">
+                        <span id="selected-range-text" style="flex:1; color:#495057;"></span>
+                        <input id="range-label" type="text" placeholder="Enter label (e.g. 5 day holiday)" style="flex:2; padding:8px; border:1px solid #ddd; border-radius:6px;" />
+                        <button id="save-range" style="padding:8px 12px; margin-left:6px; background:#28a745; color:#fff; border:none; border-radius:6px; cursor:pointer;">Save</button>
+                        <button id="cancel-label" style="padding:8px 12px; margin-left:6px; background:#6c757d; color:#fff; border:none; border-radius:6px; cursor:pointer;">Cancel</button>
+                    </div>
+                </div>
             </div>
         </div>
+        <div id="saved-ranges" style="margin-top:18px;"></div>
     </div>
     <script src="script.js"></script>
 </body>
