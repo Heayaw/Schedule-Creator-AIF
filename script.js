@@ -3,13 +3,22 @@ const calendar = {
     currentDate: new Date(),
     viewDate: new Date(),
     startDate: null,
-    endDate: null
+    endDate: null,
+    savedRanges: []
 };
 
-calendar.savedRanges = [];
-
 const init = () => {
+    const storedData = localStorage.getItem('calendarSavedRanges');
+    if (storedData) {
+        calendar.savedRanges = JSON.parse(storedData).map(range => ({
+            ...range,
+            startDate: new Date(range.startDate),
+            endDate: new Date(range.endDate)
+        }));
+    }
+
     renderCalendar();
+    renderSavedRanges();
     
     document.getElementById("prev-month").addEventListener("click", (e) => {
         e.preventDefault();
@@ -64,31 +73,23 @@ const renderMonth = (date, containerSelector) => {
     for (let i = 1; i <= lastDateOfMonth; i++) {
         const span = document.createElement('span');
         span.textContent = i;
-        
         const checkDate = new Date(year, month, i);
 
         if (checkDate.toDateString() === calendar.currentDate.toDateString()) {
             span.classList.add('today');
         }
-
         if (calendar.startDate && checkDate.toDateString() === calendar.startDate.toDateString()) {
             span.classList.add('range-start');
         }
-
         if (calendar.endDate && checkDate.toDateString() === calendar.endDate.toDateString()) {
             span.classList.add('range-end');
         }
-
         if (calendar.startDate && calendar.endDate && checkDate > calendar.startDate && checkDate < calendar.endDate) {
             span.classList.add('in-range');
         }
 
-        // FORCE THE CLICK LOGIC HERE
         span.style.cursor = "pointer"; 
-        span.addEventListener("click", () => {
-            handleDateClick(i, month, year);
-        });
-        
+        span.addEventListener("click", () => handleDateClick(i, month, year));
         datesContainer.appendChild(span);
     }
 
@@ -104,7 +105,6 @@ const renderMonth = (date, containerSelector) => {
 
 const handleDateClick = (day, month, year) => {
     const selected = new Date(year, month, day);
-
     if (!calendar.startDate || (calendar.startDate && calendar.endDate)) {
         calendar.startDate = selected;
         calendar.endDate = null;
@@ -113,7 +113,6 @@ const handleDateClick = (day, month, year) => {
     } else {
         calendar.endDate = selected;
     }
-
     renderCalendar();
 };
 
@@ -125,25 +124,17 @@ const applyRange = () => {
     } else {
         alert("Please select a valid date range.");
     }
-}
+};
 
 const cancelSelection = () => {
     calendar.startDate = null;
     calendar.endDate = null;
     renderCalendar();
-}
+};
 
 const formatDate = (date) => {
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-};
-
-const closeCalendar = () => {
-    document.querySelector(".calendar").style.display = "none";
-};
-
-const openCalendar = () => {
-    document.querySelector(".calendar").style.display = "block";
 };
 
 const processDateRange = (startDate, endDate) => {
@@ -179,6 +170,9 @@ const saveLabeledRange = () => {
     }
     const { startDate, endDate } = calendar._tempSelection;
     calendar.savedRanges.push({ startDate: new Date(startDate), endDate: new Date(endDate), label });
+    
+    localStorage.setItem('calendarSavedRanges', JSON.stringify(calendar.savedRanges));
+    
     hideLabelEntry();
     renderSavedRanges();
     renderCalendar();
@@ -188,10 +182,8 @@ const renderSavedRanges = () => {
     const container = document.getElementById('saved-ranges');
     if (!container) return;
     container.innerHTML = '';
-    if (calendar.savedRanges.length === 0) {
-        container.textContent = '';
-        return;
-    }
+    if (calendar.savedRanges.length === 0) return;
+    
     calendar.savedRanges.forEach((r, idx) => {
         const div = document.createElement('div');
         div.classList.add('saved-range');
@@ -210,7 +202,9 @@ const renderSavedRanges = () => {
 
 const removeSavedRange = (index) => {
     calendar.savedRanges.splice(index, 1);
+    localStorage.setItem('calendarSavedRanges', JSON.stringify(calendar.savedRanges));
     renderSavedRanges();
+    renderCalendar();
 };
 
 document.addEventListener('DOMContentLoaded', init);
