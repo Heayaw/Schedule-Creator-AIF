@@ -74,10 +74,12 @@ const renderMonth = (date, containerSelector) => {
         const span = document.createElement('span');
         span.textContent = i;
         const checkDate = new Date(year, month, i);
+        const checkTime = checkDate.setHours(0,0,0,0);
 
         if (checkDate.toDateString() === calendar.currentDate.toDateString()) {
             span.classList.add('today');
         }
+
         if (calendar.startDate && checkDate.toDateString() === calendar.startDate.toDateString()) {
             span.classList.add('range-start');
         }
@@ -87,6 +89,18 @@ const renderMonth = (date, containerSelector) => {
         if (calendar.startDate && calendar.endDate && checkDate > calendar.startDate && checkDate < calendar.endDate) {
             span.classList.add('in-range');
         }
+
+        calendar.savedRanges.forEach(range => {
+            const start = new Date(range.startDate).setHours(0,0,0,0);
+            const end = new Date(range.endDate).setHours(0,0,0,0);
+
+            if (checkTime >= start && checkTime <= end) {
+                span.classList.add('saved-range-item');
+                span.title = range.label;
+                if (checkTime === start) span.classList.add('saved-range-start');
+                if (checkTime === end) span.classList.add('saved-range-end');
+            }
+        });
 
         span.style.cursor = "pointer"; 
         span.addEventListener("click", () => handleDateClick(i, month, year));
@@ -170,10 +184,10 @@ const saveLabeledRange = () => {
     }
     const { startDate, endDate } = calendar._tempSelection;
     calendar.savedRanges.push({ startDate: new Date(startDate), endDate: new Date(endDate), label });
-    
     localStorage.setItem('calendarSavedRanges', JSON.stringify(calendar.savedRanges));
-    
     hideLabelEntry();
+    calendar.startDate = null;
+    calendar.endDate = null;
     renderSavedRanges();
     renderCalendar();
 };

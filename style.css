@@ -225,3 +225,26 @@ button.prev:hover, button.next:hover {
     cursor: pointer;
 }
 
+.dates span.saved-range-item {
+    background-color: #d1fae5 !important;
+    color: #065f46 !important;
+    border-radius: 0;
+    font-weight: 500;
+}
+
+.dates span.saved-range-start {
+    border-radius: 6px 0 0 6px !important;
+}
+
+.dates span.saved-range-end {
+    border-radius: 0 6px 6px 0 !important;
+}
+
+.dates span.saved-range-start.saved-range-end {
+    border-radius: 6px !important;
+}
+
+.dates span.saved-range-item:hover {
+    background-color: #a7f3d0 !important;
+    filter: brightness(0.95);
+}
