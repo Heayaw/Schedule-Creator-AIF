@@ -1,3 +1,6 @@
+/* ------------------------------------------ */
+/* -------------- RESET & BASE -------------- */
+/* ------------------------------------------ */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -17,10 +20,6 @@ body {
     max-width: 650px;
 }
 
-.datepicker {
-    position: relative;
-}
-
 #date-input {
     width: 100%;
     padding: 12px;
@@ -31,6 +30,7 @@ body {
     font-size: 1rem;
 }
 
+/* --- CALENDAR STRUCTURE --- */
 .calendar {
     display: flex;
     flex-wrap: wrap;
@@ -71,7 +71,7 @@ button.prev, button.next {
 
 button.prev:hover, button.next:hover {
     background: #595959;
-    border-color: #3c3c3c;
+    color: #fff;
 }
  
 .days {
@@ -88,10 +88,14 @@ button.prev:hover, button.next:hover {
     text-transform: uppercase;
 }
 
+
+/* ----------------------------------------------- */
+/* -------------- DATE GRID & SPANS -------------- */
+/* ----------------------------------------------- */
+
 .dates {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    gap: 0; /* Gap 0 makes the range highlight look like a solid bar */
 }
 
 .dates span {
@@ -101,9 +105,10 @@ button.prev:hover, button.next:hover {
     justify-content: center;
     font-size: 0.9rem;
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
+    transition: all 0.15s;
     user-select: none;
-    border-radius: 4px; /* Default small radius for single days */
+    border-radius: 50%;
+    margin: 2px;
 }
 
 .dates span:hover:not(.disabled) {
@@ -122,31 +127,53 @@ button.prev:hover, button.next:hover {
     color: #ff4757;
 }
 
+/* ----------------------------------------------------- */
+/* -------------- ACTIVE SELECTION (BLUE) -------------- */
+/* ----------------------------------------------------- */
 .dates span.range-start {
     background-color: #007bff !important;
     color: white !important;
-    border-radius: 6px 0 0 6px !important;
+    border-radius: 50% 0 0 50% !important;
 }
 
-/* Range End Styling */
 .dates span.range-end {
     background-color: #007bff !important;
     color: white !important;
-    border-radius: 0 6px 6px 0 !important;
+    border-radius: 0 50% 50% 0 !important;
 }
 
-/* Range Middle Styling */
 .dates span.in-range {
     background-color: #e7f3ff !important;
     color: #007bff !important;
     border-radius: 0 !important;
 }
 
-/* If start and end are the same day, make it a full circle */
 .dates span.range-start.range-end {
-    border-radius: 6px !important;
+    border-radius: 50% !important;
 }
 
+/* ---------------------------------------------------------- */
+/* -------------- SAVED FOCUS HIGHLIGHT (GREY) -------------- */
+/* ---------------------------------------------------------- */
+.dates span.saved-active {
+    background-color: #e9ecef !important;
+    color: #495057 !important;
+    border-radius: 0 !important;
+}
+
+.dates span.saved-active-start {
+    border-radius: 50% 0 0 50% !important;
+    background-color: #dee2e6 !important;
+}
+
+.dates span.saved-active-end {
+    border-radius: 0 50% 50% 0 !important;
+    background-color: #dee2e6 !important;
+}
+
+/* ----------------------------------------- */
+/* -------------- ACTION MENU -------------- */
+/* ----------------------------------------- */
 .action-menu {
     width: 100%;
     display: flex;
@@ -157,25 +184,6 @@ button.prev:hover, button.next:hover {
     border-top: 1px solid #f1f3f5;
 }
 
-.selection {
-    font-size: 0.85rem;
-    color: #495057;
-    font-weight: 500;
-}
-
-.cancel {
-    background: transparent;
-    border: none;
-    color: #868e96;
-    margin-right: 15px;
-    cursor: pointer;
-    font-weight: 500;
-}
-
-.cancel:hover {
-    color: #343a40;
-}
-
 .apply {
     background: #007bff;
     color: white;
@@ -184,67 +192,53 @@ button.prev:hover, button.next:hover {
     border-radius: 6px;
     cursor: pointer;
     font-weight: 600;
-    transition: background 0.2s;
 }
 
-.apply:hover {
-    background: #0056b3;
-}
-
-.dates span:active {
-    transform: scale(0.9);
-}
-
+/* ----------------------------------------------- */
+/* -------------- SAVED RANGES LIST -------------- */
+/* ----------------------------------------------- */
 #saved-ranges {
-    background: transparent;
+    margin-top: 20px;
 }
+
 .saved-range {
     background: #fff;
     border: 1px solid #eef3f6;
-    padding: 10px 12px;
+    padding: 12px;
     border-radius: 8px;
     margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
+
+.saved-range:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border-color: #007bff;
+}
+
 .saved-range .meta {
     color: #495057;
-    font-weight: 600;
+    font-size: 0.9rem;
 }
+
 .saved-range .label {
     color: #212529;
+    font-weight: 700;
+    margin-top: 2px;
 }
-.saved-range button.delete {
+
+button.delete {
     background: #ff6b6b;
     color: white;
     border: none;
-    padding: 6px 10px;
+    padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
 }
 
-.dates span.saved-range-item {
-    background-color: #d1fae5 !important;
-    color: #065f46 !important;
-    border-radius: 0;
-    font-weight: 500;
-}
-
-.dates span.saved-range-start {
-    border-radius: 6px 0 0 6px !important;
-}
-
-.dates span.saved-range-end {
-    border-radius: 0 6px 6px 0 !important;
-}
-
-.dates span.saved-range-start.saved-range-end {
-    border-radius: 6px !important;
-}
-
-.dates span.saved-range-item:hover {
-    background-color: #a7f3d0 !important;
-    filter: brightness(0.95);
+button.delete:hover {
+    background: #fa5252;
 }

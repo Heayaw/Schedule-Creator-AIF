@@ -4,7 +4,8 @@ const calendar = {
     viewDate: new Date(),
     startDate: null,
     endDate: null,
-    savedRanges: []
+    savedRanges: [],
+    activeHighlight: null
 };
 
 const init = () => {
@@ -16,7 +17,6 @@ const init = () => {
             endDate: new Date(range.endDate)
         }));
     }
-
     renderCalendar();
     renderSavedRanges();
     
@@ -44,7 +44,6 @@ const init = () => {
 const renderCalendar = () => {
     const leftDate = new Date(calendar.viewDate);
     renderMonth(leftDate, ".left-side");
-
     const rightDate = new Date(calendar.viewDate);
     rightDate.setMonth(rightDate.getMonth() + 1);
     renderMonth(rightDate, ".right-side");
@@ -54,7 +53,6 @@ const renderMonth = (date, containerSelector) => {
     const container = document.querySelector(containerSelector);
     const month = date.getMonth();
     const year = date.getFullYear();
-    
     container.querySelector(".month-year").textContent = `${calendar.months[month]} ${year}`;
     const datesContainer = container.querySelector(".dates");
     datesContainer.innerHTML = "";
@@ -80,30 +78,25 @@ const renderMonth = (date, containerSelector) => {
             span.classList.add('today');
         }
 
-        if (calendar.startDate && checkDate.toDateString() === calendar.startDate.toDateString()) {
-            span.classList.add('range-start');
-        }
-        if (calendar.endDate && checkDate.toDateString() === calendar.endDate.toDateString()) {
-            span.classList.add('range-end');
-        }
-        if (calendar.startDate && calendar.endDate && checkDate > calendar.startDate && checkDate < calendar.endDate) {
-            span.classList.add('in-range');
-        }
+        if (calendar.startDate && checkDate.toDateString() === calendar.startDate.toDateString()) span.classList.add('range-start');
+        if (calendar.endDate && checkDate.toDateString() === calendar.endDate.toDateString()) span.classList.add('range-end');
+        if (calendar.startDate && calendar.endDate && checkDate > calendar.startDate && checkDate < calendar.endDate) span.classList.add('in-range');
 
-        calendar.savedRanges.forEach(range => {
-            const start = new Date(range.startDate).setHours(0,0,0,0);
-            const end = new Date(range.endDate).setHours(0,0,0,0);
-
+        if (calendar.activeHighlight) {
+            const start = new Date(calendar.activeHighlight.startDate).setHours(0,0,0,0);
+            const end = new Date(calendar.activeHighlight.endDate).setHours(0,0,0,0);
             if (checkTime >= start && checkTime <= end) {
-                span.classList.add('saved-range-item');
-                span.title = range.label;
-                if (checkTime === start) span.classList.add('saved-range-start');
-                if (checkTime === end) span.classList.add('saved-range-end');
+                span.classList.add('saved-active');
+                if (checkTime === start) span.classList.add('saved-active-start');
+                if (checkTime === end) span.classList.add('saved-active-end');
             }
-        });
+        }
 
         span.style.cursor = "pointer"; 
-        span.addEventListener("click", () => handleDateClick(i, month, year));
+        span.addEventListener("click", () => {
+            calendar.activeHighlight = null;
+            handleDateClick(i, month, year);
+        });
         datesContainer.appendChild(span);
     }
 
@@ -132,9 +125,7 @@ const handleDateClick = (day, month, year) => {
 
 const applyRange = () => {
     if (calendar.startDate && calendar.endDate) {
-        const displayText = `${formatDate(calendar.startDate)} - ${formatDate(calendar.endDate)}`;
-        document.getElementById("date-input").value = displayText;
-        processDateRange(calendar.startDate, calendar.endDate);
+        showLabelEntry(calendar.startDate, calendar.endDate);
     } else {
         alert("Please select a valid date range.");
     }
@@ -143,16 +134,13 @@ const applyRange = () => {
 const cancelSelection = () => {
     calendar.startDate = null;
     calendar.endDate = null;
+    calendar.activeHighlight = null;
     renderCalendar();
 };
 
 const formatDate = (date) => {
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     return `${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
-};
-
-const processDateRange = (startDate, endDate) => {
-    showLabelEntry(startDate, endDate);
 };
 
 const showLabelEntry = (startDate, endDate) => {
@@ -177,11 +165,7 @@ const saveLabeledRange = () => {
     const labelInput = document.getElementById('range-label');
     if (!calendar._tempSelection || !labelInput) return;
     const label = labelInput.value.trim();
-    if (!label) {
-        alert('Please enter a label for the selected range.');
-        labelInput.focus();
-        return;
-    }
+    if (!label) return;
     const { startDate, endDate } = calendar._tempSelection;
     calendar.savedRanges.push({ startDate: new Date(startDate), endDate: new Date(endDate), label });
     localStorage.setItem('calendarSavedRanges', JSON.stringify(calendar.savedRanges));
@@ -196,27 +180,41 @@ const renderSavedRanges = () => {
     const container = document.getElementById('saved-ranges');
     if (!container) return;
     container.innerHTML = '';
-    if (calendar.savedRanges.length === 0) return;
-    
     calendar.savedRanges.forEach((r, idx) => {
         const div = document.createElement('div');
         div.classList.add('saved-range');
-        const meta = document.createElement('div');
-        meta.classList.add('meta');
-        meta.innerHTML = `<div>${formatDate(r.startDate)} — ${formatDate(r.endDate)}</div><div class="label">${r.label}</div>`;
+        div.style.cursor = "pointer";
+        
+        div.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') return;
+            focusRange(r);
+        });
+
+        div.innerHTML = `<div class="meta"><div>${formatDate(r.startDate)} — ${formatDate(r.endDate)}</div><div class="label">${r.label}</div></div>`;
         const del = document.createElement('button');
         del.classList.add('delete');
         del.textContent = 'Delete';
-        del.addEventListener('click', () => removeSavedRange(idx));
-        div.appendChild(meta);
+        del.addEventListener('click', (e) => {
+            e.stopPropagation();
+            removeSavedRange(idx);
+        });
         div.appendChild(del);
         container.appendChild(div);
     });
 };
 
+const focusRange = (range) => {
+    calendar.activeHighlight = range;
+    calendar.viewDate = new Date(range.startDate);
+    calendar.startDate = null;
+    calendar.endDate = null;
+    renderCalendar();
+};
+
 const removeSavedRange = (index) => {
     calendar.savedRanges.splice(index, 1);
     localStorage.setItem('calendarSavedRanges', JSON.stringify(calendar.savedRanges));
+    calendar.activeHighlight = null;
     renderSavedRanges();
     renderCalendar();
 };
