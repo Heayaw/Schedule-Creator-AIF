@@ -23,14 +23,16 @@ body {
 #date-input {
     width: 100%;
     padding: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #2d2b2b;
     border-radius: 8px;
     margin-bottom: 10px;
     outline: none;
     font-size: 1rem;
 }
 
-/* --- CALENDAR STRUCTURE --- */
+/* ------------------------------------------------ */
+/* -------------- CALENDAR STRUCTURE -------------- */
+/* ------------------------------------------------ */
 .calendar {
     display: flex;
     flex-wrap: wrap;
