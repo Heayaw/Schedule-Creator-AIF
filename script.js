@@ -17,6 +17,14 @@ const init = () => {
             endDate: new Date(range.endDate)
         }));
     }
+    
+    // Load theme preference
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+        document.body.setAttribute('data-theme', savedTheme);
+        updateThemeButton(savedTheme);
+    }
+    
     renderCalendar();
     renderSavedRanges();
     
@@ -39,6 +47,10 @@ const init = () => {
     const cancelLabelBtn = document.getElementById("cancel-label");
     if (saveBtn) saveBtn.addEventListener("click", saveLabeledRange);
     if (cancelLabelBtn) cancelLabelBtn.addEventListener("click", hideLabelEntry);
+    
+    // Theme toggle
+    const themeToggle = document.getElementById("theme-toggle");
+    if (themeToggle) themeToggle.addEventListener("click", toggleTheme);
 };
 
 const renderCalendar = () => {
@@ -217,6 +229,26 @@ const removeSavedRange = (index) => {
     calendar.activeHighlight = null;
     renderSavedRanges();
     renderCalendar();
+};
+
+const toggleTheme = () => {
+    const currentTheme = document.body.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+    document.body.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeButton(newTheme);
+};
+
+const updateThemeButton = (theme) => {
+    const button = document.getElementById('theme-toggle');
+    if (button) {
+        if (theme === 'dark') {
+            button.textContent = '☀️ Light Mode';
+        } else {
+            button.textContent = '🌙 Dark Mode';
+        }
+    }
 };
 
 document.addEventListener('DOMContentLoaded', init);

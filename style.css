@@ -1,6 +1,54 @@
 /* ------------------------------------------ */
 /* -------------- RESET & BASE -------------- */
 /* ------------------------------------------ */
+:root {
+    --bg-color: #f4f7f6;
+    --text-color: #333;
+    --card-bg: #fff;
+    --border-color: #2d2b2b;
+    --hover-bg: #f0f7ff;
+    --hover-text: #007bff;
+    --disabled-color: #dee2e6;
+    --today-shadow: #ff4757;
+    --range-bg: #e7f3ff;
+    --range-text: #007bff;
+    --saved-bg: #e9ecef;
+    --saved-text: #495057;
+    --saved-border: #dee2e6;
+    --action-border: #f1f3f5;
+    --saved-border: #eef3f6;
+    --delete-bg: #ff6b6b;
+    --delete-hover: #fa5252;
+    --toggle-bg: #dedede;
+    --toggle-hover: #595959;
+    --toggle-text: #777777;
+    --toggle-hover-text: #fff;
+}
+
+[data-theme="dark"] {
+    --bg-color: #1a1a1a;
+    --text-color: #e0e0e0;
+    --card-bg: #2d2d2d;
+    --border-color: #555;
+    --hover-bg: #333;
+    --hover-text: #4dabf7;
+    --disabled-color: #666;
+    --today-shadow: #ff6b6b;
+    --range-bg: #2c3e50;
+    --range-text: #3498db;
+    --saved-bg: #34495e;
+    --saved-text: #bdc3c7;
+    --saved-border: #7f8c8d;
+    --action-border: #34495e;
+    --saved-border: #34495e;
+    --delete-bg: #e74c3c;
+    --delete-hover: #c0392b;
+    --toggle-bg: #555;
+    --toggle-hover: #777;
+    --toggle-text: #ccc;
+    --toggle-hover-text: #fff;
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -9,10 +57,12 @@
 
 body {
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: #f4f7f6;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     padding-top: 50px;
+    transition: background-color 0.3s, color 0.3s;
 }
 
 .container {
@@ -20,14 +70,38 @@ body {
     max-width: 650px;
 }
 
+.theme-toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.toggle-btn {
+    background: var(--toggle-bg);
+    border: 1px solid var(--toggle-bg);
+    color: var(--toggle-text);
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+}
+
+.toggle-btn:hover {
+    background: var(--toggle-hover);
+    color: var(--toggle-hover-text);
+}
+
 #date-input {
     width: 100%;
     padding: 12px;
-    border: 1px solid #2d2b2b;
+    border: 1px solid var(--border-color);
     border-radius: 8px;
     margin-bottom: 10px;
     outline: none;
     font-size: 1rem;
+    background-color: var(--card-bg);
+    color: var(--text-color);
 }
 
 /* ------------------------------------------------ */
@@ -36,7 +110,7 @@ body {
 .calendar {
     display: flex;
     flex-wrap: wrap;
-    background: #fff;
+    background: var(--card-bg);
     border-radius: 12px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     padding: 20px;
@@ -58,22 +132,22 @@ body {
 .month-year {
     font-size: 1rem;
     font-weight: 600;
-    color: #333;
+    color: var(--text-color);
 }
 
 button.prev, button.next {
-    background: #dedede;
-    border: 1px solid #dedede;
+    background: var(--toggle-bg);
+    border: 1px solid var(--toggle-bg);
     padding: 6px 12px;
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
-    color: #777777;
+    color: var(--toggle-text);
 }
 
 button.prev:hover, button.next:hover {
-    background: #595959;
-    color: #fff;
+    background: var(--toggle-hover);
+    color: var(--toggle-hover-text);
 }
  
 .days {
@@ -114,19 +188,19 @@ button.prev:hover, button.next:hover {
 }
 
 .dates span:hover:not(.disabled) {
-    background-color: #f0f7ff;
-    color: #007bff;
+    background-color: var(--hover-bg);
+    color: var(--hover-text);
 }
 
 .dates span.disabled {
-    color: #dee2e6;
+    color: var(--disabled-color);
     cursor: default;
 }
 
 .dates span.today {
-    box-shadow: inset 0 0 0 2px #ff4757;
+    box-shadow: inset 0 0 0 2px var(--today-shadow);
     font-weight: bold;
-    color: #ff4757;
+    color: var(--today-shadow);
 }
 
 /* ----------------------------------------------------- */
@@ -145,8 +219,8 @@ button.prev:hover, button.next:hover {
 }
 
 .dates span.in-range {
-    background-color: #e7f3ff !important;
-    color: #007bff !important;
+    background-color: var(--range-bg) !important;
+    color: var(--range-text) !important;
     border-radius: 0 !important;
 }
 
@@ -158,19 +232,19 @@ button.prev:hover, button.next:hover {
 /* -------------- SAVED FOCUS HIGHLIGHT (GREY) -------------- */
 /* ---------------------------------------------------------- */
 .dates span.saved-active {
-    background-color: #e9ecef !important;
-    color: #495057 !important;
+    background-color: var(--saved-bg) !important;
+    color: var(--saved-text) !important;
     border-radius: 0 !important;
 }
 
 .dates span.saved-active-start {
     border-radius: 50% 0 0 50% !important;
-    background-color: #dee2e6 !important;
+    background-color: var(--saved-border) !important;
 }
 
 .dates span.saved-active-end {
     border-radius: 0 50% 50% 0 !important;
-    background-color: #dee2e6 !important;
+    background-color: var(--saved-border) !important;
 }
 
 /* ----------------------------------------- */
@@ -183,7 +257,7 @@ button.prev:hover, button.next:hover {
     align-items: center;
     margin-top: 10px;
     padding-top: 15px;
-    border-top: 1px solid #f1f3f5;
+    border-top: 1px solid var(--action-border);
 }
 
 .apply {
@@ -204,8 +278,8 @@ button.prev:hover, button.next:hover {
 }
 
 .saved-range {
-    background: #fff;
-    border: 1px solid #eef3f6;
+    background: var(--card-bg);
+    border: 1px solid var(--saved-border);
     padding: 12px;
     border-radius: 8px;
     margin-bottom: 8px;
@@ -222,18 +296,18 @@ button.prev:hover, button.next:hover {
 }
 
 .saved-range .meta {
-    color: #495057;
+    color: var(--saved-text);
     font-size: 0.9rem;
 }
 
 .saved-range .label {
-    color: #212529;
+    color: var(--text-color);
     font-weight: 700;
     margin-top: 2px;
 }
 
 button.delete {
-    background: #ff6b6b;
+    background: var(--delete-bg);
     color: white;
     border: none;
     padding: 6px 12px;
@@ -242,5 +316,5 @@ button.delete {
 }
 
 button.delete:hover {
-    background: #fa5252;
+    background: var(--delete-hover);
 }
